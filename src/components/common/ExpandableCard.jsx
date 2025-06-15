@@ -9,7 +9,7 @@ const ExpandableCard = ({ title, children, icon }) => {
   };
 
   return (
-    <div className="card h-full">
+    <div className="card border rounded-md shadow">
       <div 
         className="flex items-center justify-between p-5 cursor-pointer bg-white border-b border-gray-200 hover:bg-gray-50 transition-colors"
         onClick={toggleExpand}
@@ -22,13 +22,15 @@ const ExpandableCard = ({ title, children, icon }) => {
           {isExpanded ? <FaChevronUp /> : <FaChevronDown />}
         </div>
       </div>
-      
-      <div 
-        className={`overflow-hidden transition-all duration-300 ${
-          isExpanded ? 'animate-expand' : 'animate-collapse h-0'
+
+      <div
+        className={`transition-all duration-500 ease-in-out overflow-hidden ${
+          isExpanded ? 'max-h-[2000px]' : 'max-h-0'
         }`}
       >
-        {isExpanded && <div className="p-5">{children}</div>}
+        <div className="p-5">
+          {children}
+        </div>
       </div>
     </div>
   );

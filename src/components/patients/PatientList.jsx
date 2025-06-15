@@ -4,7 +4,7 @@ import PatientForm from './PatientForm';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 
 const PatientList = () => {
-  const { patients, deletePatient } = useData();
+  const { patients, deletePatient, plans } = useData();
   const [editingPatient, setEditingPatient] = useState(null);
 
   const handleEdit = (patient) => {
@@ -24,6 +24,18 @@ const PatientList = () => {
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('pt-BR');
+  };
+
+  const getPlanName = (planId) => {
+    const plan = plans.find(p => p.id === planId);
+    return plan ? plan.name : 'Desconhecido';
+  };
+
+  const getPlanClass = (planId) => {
+    const name = getPlanName(planId);
+    if (name === 'Plano Premium') return 'bg-green-100 text-green-800';
+    if (name === 'Plano Intermediário') return 'bg-blue-100 text-blue-800';
+    return 'bg-gray-100 text-gray-800';
   };
 
   if (editingPatient) {
@@ -62,14 +74,8 @@ const PatientList = () => {
                 <td className="text-black px-6 py-4 whitespace-nowrap">{patient.cpf}</td>
                 <td className="text-black px-6 py-4 whitespace-nowrap">{formatDate(patient.birth_date)}</td>
                 <td className="text-black px-6 py-4 whitespace-nowrap">
-                  <span className={`px-2 py-1 text-xs rounded-full ${
-                    patient.plan === 'Plano Premium' 
-                      ? 'bg-green-100 text-green-800' 
-                      : patient.plan === 'Plano Intermediário'
-                        ? 'bg-blue-100 text-blue-800'
-                        : 'bg-gray-100 text-gray-800'
-                  }`}>
-                    {patient.plan}
+                  <span className={`px-2 py-1 text-xs rounded-full ${getPlanClass(patient.plan_id)}`}>
+                    {getPlanName(patient.plan_id)}
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">

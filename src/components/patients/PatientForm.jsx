@@ -5,47 +5,44 @@ const initialFormState = {
   name: '',
   cpf: '',
   birth_date: '',
-  plan: 'Plano Básico'
+  plan_id: ''
 };
 
-const healthPlans = [
-  'Plano Básico',
-  'Plano Intermediário',
-  'Plano Premium'
-];
-
 const PatientForm = ({ patient = null, onSaved = null }) => {
-  const { addPatient, updatePatient } = useData();
+  const { addPatient, updatePatient, plans } = useData();
   const [formData, setFormData] = useState(initialFormState);
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
     if (patient) {
-      setFormData(patient);
+      setFormData({
+        ...patient,
+        plan_id: patient.plan_id || ''
+      });
     }
   }, [patient]);
 
   const validateForm = () => {
     const newErrors = {};
-    
+
     if (!formData.name.trim()) {
       newErrors.name = 'Nome é obrigatório';
     }
-    
+
     if (!formData.cpf.trim()) {
       newErrors.cpf = 'CPF é obrigatório';
     } else if (!/^\d{3}\.\d{3}\.\d{3}-\d{2}$/.test(formData.cpf)) {
       newErrors.cpf = 'CPF deve estar no formato 123.456.789-00';
     }
-    
+
     if (!formData.birth_date) {
       newErrors.birth_date = 'Data de nascimento é obrigatória';
     }
-    
-    if (!formData.plan) {
-      newErrors.plan = 'Plano é obrigatório';
+
+    if (!formData.plan_id) {
+      newErrors.plan_id = 'Plano é obrigatório';
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -53,7 +50,7 @@ const PatientForm = ({ patient = null, onSaved = null }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-    
+
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: undefined }));
     }
@@ -61,17 +58,20 @@ const PatientForm = ({ patient = null, onSaved = null }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-    if (!validateForm()) {
-      return;
-    }
-    
+
+    if (!validateForm()) return;
+
+    const payload = {
+      ...formData,
+      plan_id: parseInt(formData.plan_id)
+    };
+
     if (patient) {
-      updatePatient(formData);
+      updatePatient(payload);
     } else {
-      addPatient(formData);
+      addPatient(payload);
     }
-    
+
     if (onSaved) {
       onSaved();
     } else {
@@ -80,7 +80,7 @@ const PatientForm = ({ patient = null, onSaved = null }) => {
   };
 
   const handleReset = () => {
-    setFormData(patient ? patient : initialFormState);
+    setFormData(patient ? { ...patient, plan_id: patient.plan_id || '' } : initialFormState);
     setErrors({});
   };
 
@@ -98,7 +98,7 @@ const PatientForm = ({ patient = null, onSaved = null }) => {
         />
         {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name}</p>}
       </div>
-      
+
       <div className="form-group">
         <label htmlFor="cpf" className="form-label">CPF</label>
         <input
@@ -112,7 +112,7 @@ const PatientForm = ({ patient = null, onSaved = null }) => {
         />
         {errors.cpf && <p className="mt-1 text-sm text-red-600">{errors.cpf}</p>}
       </div>
-      
+
       <div className="form-group">
         <label htmlFor="birth_date" className="form-label">Data de Nascimento</label>
         <input
@@ -125,23 +125,24 @@ const PatientForm = ({ patient = null, onSaved = null }) => {
         />
         {errors.birth_date && <p className="mt-1 text-sm text-red-600">{errors.birth_date}</p>}
       </div>
-      
+
       <div className="form-group">
-        <label htmlFor="plan" className="form-label">Plano</label>
+        <label htmlFor="plan_id" className="form-label">Plano</label>
         <select
-          id="plan"
-          name="plan"
-          value={formData.plan}
+          id="plan_id"
+          name="plan_id"
+          value={formData.plan_id}
           onChange={handleChange}
-          className={`input-field ${errors.plan ? 'border-red-500' : ''}`}
+          className={`input-field ${errors.plan_id ? 'border-red-500' : ''}`}
         >
-          {healthPlans.map(plan => (
-            <option key={plan} value={plan}>{plan}</option>
+          <option value="">Selecione um plano</option>
+          {plans.map(plan => (
+            <option key={plan.id} value={plan.id}>{plan.name}</option>
           ))}
         </select>
-        {errors.plan && <p className="mt-1 text-sm text-red-600">{errors.plan}</p>}
+        {errors.plan_id && <p className="mt-1 text-sm text-red-600">{errors.plan_id}</p>}
       </div>
-      
+
       <div className="flex space-x-3">
         <button
           type="submit"

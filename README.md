@@ -16,12 +16,14 @@
 - Edição e exclusão de registros
 - Interface com abas (Lista/Cadastro)
 - Cartões expansíveis para melhor usabilidade
+- Listagem de planos de saúde
 
 ## 🖼️ Layout
 
-A interface apresenta dois cartões principais:
+A interface apresenta três cartões principais:
 - **Médicos**: abas para listar e cadastrar médicos
 - **Pacientes**: abas para listar e cadastrar pacientes
+- **Planos de Saúde**: abas para listar planos de saúde
 
 Cada cartão pode ser expandido ou recolhido e traz recursos como:
 - Validação de formulários
@@ -77,6 +79,7 @@ src/
 │   ├── common/          
 │   ├── doctors/         
 │   ├── patients/        
+│   ├── plans/           
 │   └── Header.jsx
 │
 ├── context/
@@ -96,5 +99,4 @@ O projeto utiliza Context API para armazenar e manipular dados de médicos e pac
 
 - Persistência com backend ou localStorage
 - Filtro e busca em listas
-- Upload de documentos ou fotos
 - Responsividade aprimorada para mobile

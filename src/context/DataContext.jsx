@@ -14,7 +14,6 @@ export const DataProvider = ({ children }) => {
     fetchPlans();
   }, []);
 
-  // -------- PLANS CRUD --------
   const fetchPlans = async () => {
     try {
       const response = await axios.get('http://localhost:5000/api/plans');
@@ -97,7 +96,6 @@ export const DataProvider = ({ children }) => {
     }
   };
 
-  // -------- PATIENTS CRUD --------
   const fetchPatients = async () => {
     try {
       const response = await axios.get('http://localhost:5000/api/patients');

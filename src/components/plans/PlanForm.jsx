@@ -1,70 +1,79 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useData } from '../../context/DataContext';
-import PlanForm from './PlanForm';
-import { FaEdit, FaTrash } from 'react-icons/fa';
 
-const PlanList = () => {
-  const { plans, deletePlan } = useData();
-  const [editingPlan, setEditingPlan] = useState(null);
+const initialFormState = {
+  name: ''
+};
 
-  const handleEdit = (plan) => {
-    setEditingPlan(plan);
+const PlanForm = ({ plan = null, onSaved = null }) => {
+  const { addPlan, updatePlan } = useData();
+  const [formData, setFormData] = useState(initialFormState);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (plan) {
+      setFormData(plan);
+    }
+  }, [plan]);
+
+  const handleChange = (e) => {
+    const { value } = e.target;
+    setFormData({ name: value });
+    if (error) setError(null);
   };
 
-  const handleDelete = (id) => {
-    if (window.confirm('Deseja excluir este plano?')) {
-      deletePlan(id);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!formData.name.trim()) {
+      setError('O nome do plano é obrigatório.');
+      return;
+    }
+
+    if (plan) {
+      updatePlan(formData);
+    } else {
+      addPlan(formData);
+    }
+
+    if (onSaved) {
+      onSaved();
+    } else {
+      setFormData(initialFormState);
     }
   };
 
-  const handleCancelEdit = () => {
-    setEditingPlan(null);
+  const handleReset = () => {
+    setFormData(plan || initialFormState);
+    setError(null);
   };
 
-  if (editingPlan) {
-    return (
-      <div>
-        <button onClick={handleCancelEdit} className="mb-4 btn btn-outline">
-          Voltar para a lista
-        </button>
-        <PlanForm plan={editingPlan} onSaved={handleCancelEdit} />
-      </div>
-    );
-  }
-
   return (
-    <div className="overflow-x-auto">
-      {plans.length === 0 ? (
-        <p className="text-center py-4 text-gray-500">Nenhum plano cadastrado.</p>
-      ) : (
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nome do Plano</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {plans.map(plan => (
-              <tr key={plan.id} className="hover:bg-gray-50">
-                <td className="text-black px-6 py-4 whitespace-nowrap">{plan.name}</td>
-                <td className="text-black px-6 py-4 whitespace-nowrap">
-                  <div className="flex space-x-2">
-                    <button onClick={() => handleEdit(plan)} className="text-blue-600 hover:text-blue-800">
-                      <FaEdit />
-                    </button>
-                    <button onClick={() => handleDelete(plan.id)} className="text-red-600 hover:text-red-800">
-                      <FaTrash />
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-    </div>
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="form-group">
+        <label htmlFor="name" className="form-label">Nome do Plano</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          placeholder="Ex: Plano Premium"
+          value={formData.name}
+          onChange={handleChange}
+          className={`input-field ${error ? 'border-red-500' : ''}`}
+        />
+        {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
+      </div>
+
+      <div className="flex space-x-3">
+        <button type="submit" className="btn btn-primary">
+          {plan ? 'Atualizar' : 'Salvar'}
+        </button>
+        <button type="button" onClick={handleReset} className="btn btn-outline">
+          Limpar
+        </button>
+      </div>
+    </form>
   );
 };
 
-export default PlanList;
+export default PlanForm;

@@ -9,6 +9,10 @@ const PlanCard = () => {
     {
       label: 'Lista',
       content: <PlanList />
+    },
+    {
+      label: 'Cadastro',
+      content: <PlanForm />
     }
   ];
 

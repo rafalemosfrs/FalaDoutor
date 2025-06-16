@@ -17,8 +17,8 @@ const PlanForm = ({ plan = null, onSaved = null }) => {
   }, [plan]);
 
   const handleChange = (e) => {
-    const { value } = e.target;
-    setFormData({ name: value });
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
     if (error) setError(null);
   };
 

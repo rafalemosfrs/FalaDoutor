@@ -5,6 +5,7 @@ import Header from './components/Header'
 import DoctorCard from './components/doctors/DoctorCard'
 import PatientCard from './components/patients/PatientCard'
 import PlanCard from './components/plans/PlanCard'
+import ReportsCard from './components/reports/ReportsCard'
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
             <DoctorCard />
             <PatientCard />
             <PlanCard />
+            <ReportsCard />
           </div>
         </main>
       </div>

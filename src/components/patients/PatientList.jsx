@@ -31,6 +31,11 @@ const PatientList = () => {
     return plan ? plan.name : 'Desconhecido';
   };
 
+  const getPlanValue = (planId) => {
+    const plan = plans.find(p => p.id === planId);
+    return plan ? Number(plan.base_value || 0).toFixed(2) : '0.00';
+  };
+
   const getPlanClass = (planId) => {
     const name = getPlanName(planId);
     if (name === 'Plano Premium') return 'bg-green-100 text-green-800';
@@ -53,7 +58,7 @@ const PatientList = () => {
   }
 
   return (
-    <div className="overflow-x-auto">
+    <div className="space-y-6 max-h-[600px] overflow-y-auto pr-2">
       {patients.length === 0 ? (
         <p className="text-center py-4 text-gray-500">Nenhum paciente cadastrado.</p>
       ) : (
@@ -68,14 +73,14 @@ const PatientList = () => {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-          {Array.isArray(patients) && patients.map((patient) => (
+            {Array.isArray(patients) && patients.map((patient) => (
               <tr key={patient.id} className="hover:bg-gray-50">
                 <td className="text-black px-6 py-4 whitespace-nowrap">{patient.name}</td>
                 <td className="text-black px-6 py-4 whitespace-nowrap">{patient.cpf}</td>
                 <td className="text-black px-6 py-4 whitespace-nowrap">{formatDate(patient.birth_date)}</td>
                 <td className="text-black px-6 py-4 whitespace-nowrap">
                   <span className={`px-2 py-1 text-xs rounded-full ${getPlanClass(patient.plan_id)}`}>
-                    {getPlanName(patient.plan_id)}
+                    {getPlanName(patient.plan_id)} — R$ {getPlanValue(patient.plan_id)}
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">

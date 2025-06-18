@@ -33,7 +33,7 @@ const PlanList = () => {
   }
 
   return (
-    <div className="overflow-x-auto">
+    <div className="space-y-6 max-h-[600px] overflow-y-auto pr-2">
       {plans.length === 0 ? (
         <p className="text-center py-4 text-gray-500">Nenhum plano cadastrado.</p>
       ) : (
@@ -41,6 +41,7 @@ const PlanList = () => {
           <thead className="bg-gray-50">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nome do Plano</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Valor</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
             </tr>
           </thead>
@@ -48,6 +49,9 @@ const PlanList = () => {
             {plans.map(plan => (
               <tr key={plan.id} className="hover:bg-gray-50">
                 <td className="text-black px-6 py-4 whitespace-nowrap">{plan.name}</td>
+                <td className="text-black px-6 py-4 whitespace-nowrap">
+                  R$ {Number(plan.base_value || 0).toFixed(2)}
+                </td>
                 <td className="text-black px-6 py-4 whitespace-nowrap">
                   <div className="flex space-x-2">
                     <button onClick={() => handleEdit(plan)} className="text-blue-600 hover:text-blue-800">

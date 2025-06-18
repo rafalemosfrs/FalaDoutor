@@ -3,6 +3,7 @@ CREATE TABLE doctors (
     name VARCHAR(100) NOT NULL,
     cpf VARCHAR(14) NOT NULL UNIQUE,
     crm VARCHAR(20) NOT NULL UNIQUE
+    birth_date DATE NOT NULL,
 );
 
 CREATE TABLE patients (
@@ -16,14 +17,7 @@ CREATE TABLE patients (
 
 CREATE TABLE plans (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(30) NOT NULL UNIQUE
+    name VARCHAR(30) NOT NULL UNIQUE,
+    base_value DECIMAL(10, 2) NOT NULL
 );
 
-INSERT INTO plans (name)
-VALUES ('Plano Básico'), ('Plano Intermediário'), ('Plano Premium');
-
-INSERT INTO doctors (name, cpf, crm)
-VALUES ('Dr. João Silva', '12345678901', 'CRM-SP-12345');
-
-INSERT INTO patients (name, cpf, birth_date, plan_id)
-VALUES ('Maria Oliveira', '98765432109', '2000-01-15', 1);

@@ -7,16 +7,18 @@
 - [React](https://reactjs.org/)
 - [Tailwind CSS](https://tailwindcss.com/)
 - [React Icons](https://react-icons.github.io/react-icons/)
+- [Recharts](https://recharts.org/)
 - Context API (para gerenciamento de estado)
 
 ## 🎯 Funcionalidades
 
-- Listagem e cadastro de médicos (nome, CPF, CRM)
+- Listagem e cadastro de médicos (nome, CPF, data de nascimento, CRM)
 - Listagem e cadastro de pacientes (nome, CPF, data de nascimento, plano de saúde)
+- Listagem e cadastro de planos de saúde (nome, valor)
+- Listagem de relatórios (filtros gerais)
 - Edição e exclusão de registros
 - Interface com abas (Lista/Cadastro)
 - Cartões expansíveis para melhor usabilidade
-- Listagem de planos de saúde
 
 ## 🖼️ Layout
 
@@ -24,10 +26,11 @@ A interface apresenta três cartões principais:
 - **Médicos**: abas para listar e cadastrar médicos
 - **Pacientes**: abas para listar e cadastrar pacientes
 - **Planos de Saúde**: abas para listar planos de saúde
+- **Relatórios**: abas para listar relatórios
 
 Cada cartão pode ser expandido ou recolhido e traz recursos como:
 - Validação de formulários
-- Feedback visual para ações (edição, exclusão)
+- Feedback visual para ações CRUD (edição, exclusão, criação e leitura)
 - Estilização consistente com Tailwind
 
 ## 🚀 Como Rodar o Projeto
@@ -63,15 +66,22 @@ npm run dev
 
 ```bash
 backend/
-├── controllers/
+├── controllers/          
+│   ├── doctorsController.js         
+│   ├── patientsController.js        
+│   ├── plansController.js           
+│   └── reportController.js         
 ├── models/
-├── routes/
+├── routes/                
+│   ├── doctorsRoutes.js        
+│   ├── patientsRoutes.js           
+│   ├── plansRoutes.js           
+│   └── reportRoutes.js
 ├── config/
-
+│   └── db.js
 ├── server.js
 ├── .env
 └── package.json
-
 
 src/
 │
@@ -79,7 +89,8 @@ src/
 │   ├── common/          
 │   ├── doctors/         
 │   ├── patients/        
-│   ├── plans/           
+│   ├── plans/
+│   ├── reports/     
 │   └── Header.jsx
 │
 ├── context/

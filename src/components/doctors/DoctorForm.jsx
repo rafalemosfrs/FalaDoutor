@@ -4,6 +4,7 @@ import { useData } from '../../context/DataContext';
 const initialFormState = {
   name: '',
   cpf: '',
+  birth_date: '',
   crm: ''
 };
 
@@ -20,21 +21,25 @@ const DoctorForm = ({ doctor = null, onSaved = null }) => {
 
   const validateForm = () => {
     const newErrors = {};
-    
+
     if (!formData.name.trim()) {
       newErrors.name = 'Nome é obrigatório';
     }
-    
+
     if (!formData.cpf.trim()) {
       newErrors.cpf = 'CPF é obrigatório';
     } else if (!/^\d{3}\.\d{3}\.\d{3}-\d{2}$/.test(formData.cpf)) {
       newErrors.cpf = 'CPF deve estar no formato 123.456.789-00';
     }
-    
+
+    if (!formData.birth_date) {
+      newErrors.birth_date = 'Data de nascimento é obrigatória';
+    }
+
     if (!formData.crm.trim()) {
       newErrors.crm = 'CRM é obrigatório';
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -50,17 +55,15 @@ const DoctorForm = ({ doctor = null, onSaved = null }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-    if (!validateForm()) {
-      return;
-    }
-    
+
+    if (!validateForm()) return;
+
     if (doctor) {
       updateDoctor(formData);
     } else {
       addDoctor(formData);
     }
-    
+
     if (onSaved) {
       onSaved();
     } else {
@@ -88,7 +91,7 @@ const DoctorForm = ({ doctor = null, onSaved = null }) => {
         />
         {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name}</p>}
       </div>
-      
+
       <div className="form-group">
         <label htmlFor="cpf" className="form-label">CPF</label>
         <input
@@ -102,7 +105,20 @@ const DoctorForm = ({ doctor = null, onSaved = null }) => {
         />
         {errors.cpf && <p className="mt-1 text-sm text-red-600">{errors.cpf}</p>}
       </div>
-      
+
+      <div className="form-group">
+        <label htmlFor="birth_date" className="form-label">Data de Nascimento</label>
+        <input
+          type="date"
+          id="birth_date"
+          name="birth_date"
+          value={formData.birth_date}
+          onChange={handleChange}
+          className={`input-field ${errors.birth_date ? 'border-red-500' : ''}`}
+        />
+        {errors.birth_date && <p className="mt-1 text-sm text-red-600">{errors.birth_date}</p>}
+      </div>
+
       <div className="form-group">
         <label htmlFor="crm" className="form-label">CRM</label>
         <input
@@ -116,19 +132,12 @@ const DoctorForm = ({ doctor = null, onSaved = null }) => {
         />
         {errors.crm && <p className="mt-1 text-sm text-red-600">{errors.crm}</p>}
       </div>
-      
+
       <div className="flex space-x-3">
-        <button
-          type="submit"
-          className="btn btn-primary"
-        >
+        <button type="submit" className="btn btn-primary">
           {doctor ? 'Atualizar' : 'Salvar'}
         </button>
-        <button
-          type="button"
-          onClick={handleReset}
-          className="btn btn-outline"
-        >
+        <button type="button" onClick={handleReset} className="btn btn-outline">
           Limpar
         </button>
       </div>

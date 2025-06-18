@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { useData } from '../../context/DataContext';
 
 const initialFormState = {
-  name: ''
+  name: '',
+  base_value: ''
 };
 
 const PlanForm = ({ plan = null, onSaved = null }) => {
@@ -12,7 +13,10 @@ const PlanForm = ({ plan = null, onSaved = null }) => {
 
   useEffect(() => {
     if (plan) {
-      setFormData(plan);
+      setFormData({
+        name: plan.name || '',
+        base_value: plan.base_value || ''
+      });
     }
   }, [plan]);
 
@@ -30,10 +34,16 @@ const PlanForm = ({ plan = null, onSaved = null }) => {
       return;
     }
 
+    const payload = {
+      ...formData,
+      id: plan?.id,
+      base_value: Number(formData.base_value)
+    };
+
     if (plan) {
-      updatePlan(formData);
+      updatePlan(payload);
     } else {
-      addPlan(formData);
+      addPlan(payload);
     }
 
     if (onSaved) {
@@ -44,7 +54,10 @@ const PlanForm = ({ plan = null, onSaved = null }) => {
   };
 
   const handleReset = () => {
-    setFormData(plan || initialFormState);
+    setFormData(plan ? {
+      name: plan.name || '',
+      base_value: plan.base_value || ''
+    } : initialFormState);
     setError(null);
   };
 
@@ -62,6 +75,20 @@ const PlanForm = ({ plan = null, onSaved = null }) => {
           className={`input-field ${error ? 'border-red-500' : ''}`}
         />
         {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="base_value" className="form-label">Valor do Plano (R$)</label>
+        <input
+          type="number"
+          id="base_value"
+          name="base_value"
+          step="0.01"
+          placeholder="Ex: 89.90"
+          value={formData.base_value}
+          onChange={handleChange}
+          className="input-field"
+        />
       </div>
 
       <div className="flex space-x-3">

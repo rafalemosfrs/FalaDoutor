@@ -30,7 +30,6 @@ const ReportsBarChart = () => {
     return plan && plan.base_value > 89;
   });
 
-  // Data for age distribution
   const ageDistributionData = [
     {
       category: 'Médicos',
@@ -44,14 +43,12 @@ const ReportsBarChart = () => {
     }
   ];
 
-  // Data for patients by plan
   const planDistributionData = plans.map(plan => ({
     plano: plan.name.replace('Plano ', ''),
     quantidade: patientsByPlan[plan.name] || 0,
     valor: plan.base_value
   }));
 
-  // Data for plan value distribution
   const planValueData = [
     {
       categoria: 'Planos até R$ 89,00',
@@ -81,7 +78,6 @@ const ReportsBarChart = () => {
 
   return (
     <div className="space-y-8">
-      {/* Distribuição por idade */}
       <div className="bg-white p-4 rounded-lg border border-gray-200">
         <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center">
           Distribuição por Idade - Médicos vs Pacientes
@@ -99,15 +95,24 @@ const ReportsBarChart = () => {
         </ResponsiveContainer>
       </div>
 
-      {/* Pacientes por plano */}
       <div className="bg-white p-4 rounded-lg border border-gray-200">
         <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center">
           Quantidade de Pacientes por Plano
         </h3>
         <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={planDistributionData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+          <BarChart
+            data={planDistributionData}
+            margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+            barCategoryGap="20%"
+            barGap={10}
+          >
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="plano" />
+            <XAxis 
+              dataKey="plano" 
+              textAnchor="end"
+              tickMargin={10}
+              angle={-25}                
+            />
             <YAxis />
             <Tooltip 
               content={({ active, payload, label }) => {
@@ -124,13 +129,16 @@ const ReportsBarChart = () => {
                 return null;
               }}
             />
-            <Legend />
+            <Legend
+              verticalAlign="bottom"
+              align="center"
+              wrapperStyle={{ paddingTop: 30 }}
+            />
             <Bar dataKey="quantidade" fill="#0088FE" />
           </BarChart>
         </ResponsiveContainer>
       </div>
 
-      {/* Distribuição por valor do plano */}
       <div className="bg-white p-4 rounded-lg border border-gray-200">
         <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center">
           Pacientes por Valor do Plano

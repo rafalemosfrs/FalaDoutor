@@ -70,7 +70,7 @@ export const DataProvider = ({ children }) => {
 
   const addDoctor = async (doctor) => {
     try {
-      console.log('Enviando médico:', doctor); // 👈 Verifique o birth_date aqui
+      console.log('Enviando médico:', doctor);
       const response = await axios.post('http://localhost:5000/api/doctors', doctor);
       setDoctors([...doctors, response.data]);
     } catch (error) {

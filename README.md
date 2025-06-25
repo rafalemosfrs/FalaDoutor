@@ -32,7 +32,7 @@
 
 ## 🖼️ Layout
 
-A interface apresenta três cartões principais:
+A interface apresenta quatro cartões principais:
 - **Médicos**: abas para listar e cadastrar médicos
 - **Pacientes**: abas para listar e cadastrar pacientes
 - **Planos de Saúde**: abas para listar planos de saúde

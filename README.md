@@ -8,7 +8,15 @@
 - [Tailwind CSS](https://tailwindcss.com/)
 - [React Icons](https://react-icons.github.io/react-icons/)
 - [Recharts](https://recharts.org/)
-- Context API (para gerenciamento de estado)
+- [Papaparse](https://www.papaparse.com/)
+- [Axios](https://axios-http.com/)
+- [XLSX](https://github.com/SheetJS/sheetjs)
+- [Knex](https://knexjs.org/)
+- [PostgreSQL](https://www.postgresql.org/)
+- [Cors](https://github.com/expressjs/cors)
+- [Dotenv](https://github.com/motdotla/dotenv)
+- [Vite](https://vite.dev/)
+- [Context API](https://reactjs.org/docs/context-api.html)
 
 ## 🎯 Funcionalidades
 
@@ -18,7 +26,9 @@
 - Listagem de relatórios (filtros gerais)
 - Edição e exclusão de registros
 - Interface com abas (Lista/Cadastro)
+- Importação de dados via Excel
 - Cartões expansíveis para melhor usabilidade
+- Gráficos de relatórios
 
 ## 🖼️ Layout
 
@@ -32,6 +42,8 @@ Cada cartão pode ser expandido ou recolhido e traz recursos como:
 - Validação de formulários
 - Feedback visual para ações CRUD (edição, exclusão, criação e leitura)
 - Estilização consistente com Tailwind
+- Importação de dados via Excel
+- Gráficos de relatórios
 
 ## 🚀 Como Rodar o Projeto
 Clone o repositório:
@@ -86,11 +98,27 @@ backend/
 src/
 │
 ├── components/
-│   ├── common/          
-│   ├── doctors/         
-│   ├── patients/        
+│   ├── common/
+│      ├── BulkUpload.jsx
+│      ├── ExpandableCard.jsx
+│      └── TabPanel.jsx
+│   ├── doctors/
+│      ├── DoctorCard.jsx
+│      ├── DoctorForm.jsx
+│      └── DoctorList.jsx
+│   ├── patients/
+│      ├── PatientCard.jsx
+│      ├── PatientForm.jsx
+│      └── PatientList.jsx
 │   ├── plans/
-│   ├── reports/     
+│      ├── PlanCard.jsx
+│      ├── PlanForm.jsx
+│      └── PlanList.jsx
+│   ├── reports/
+│      ├── ReportsCard.jsx
+│      ├── ReportsBarChart.jsx
+│      ├── ReportsPieChart.jsx
+│      └── ReportsList.jsx
 │   └── Header.jsx
 │
 ├── context/
@@ -98,7 +126,10 @@ src/
 │
 ├── App.jsx
 ├── main.jsx
-└── index.css
+├── index.css
+├── vite.config.js
+├── package.json
+└── README.md
 
 ```
 
@@ -108,6 +139,5 @@ O projeto utiliza Context API para armazenar e manipular dados de médicos e pac
 
 ## ✨ Melhorias Futuras
 
-- Persistência com backend ou localStorage
 - Filtro e busca em listas
 - Responsividade aprimorada para mobile

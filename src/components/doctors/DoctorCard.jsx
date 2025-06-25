@@ -3,6 +3,7 @@ import ExpandableCard from '../common/ExpandableCard';
 import TabPanel from '../common/TabPanel';
 import DoctorList from './DoctorList';
 import DoctorForm from './DoctorForm';
+import BulkUpload from '../common/BulkUpload';
 
 const DoctorCard = () => {
   const tabs = [
@@ -12,7 +13,12 @@ const DoctorCard = () => {
     },
     {
       label: 'Cadastro',
-      content: <DoctorForm />
+      content: (
+        <div className="space-y-6">
+          <BulkUpload endpoint="doctors" />
+          <DoctorForm />
+        </div>
+      )
     }
   ];
 

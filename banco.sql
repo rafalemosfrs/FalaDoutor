@@ -2,8 +2,8 @@ CREATE TABLE doctors (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     cpf VARCHAR(14) NOT NULL UNIQUE,
-    crm VARCHAR(20) NOT NULL UNIQUE
-    birth_date DATE NOT NULL,
+    crm VARCHAR(20) NOT NULL UNIQUE,
+    birth_date DATE NOT NULL
 );
 
 CREATE TABLE patients (

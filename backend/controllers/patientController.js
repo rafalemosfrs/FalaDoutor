@@ -29,3 +29,24 @@ exports.remove = async (req, res) => {
   await db.query('DELETE FROM patients WHERE id = $1', [id]);
   res.status(204).end();
 };
+
+exports.bulkInsert = async (req, res) => {
+  const patients = req.body;
+
+  try {
+    const insertPromises = patients.map(({ name, cpf, birth_date, plan_id }) => {
+      return db.query(
+        'INSERT INTO patients (name, cpf, birth_date, plan_id) VALUES ($1, $2, $3, $4)',
+        [name, cpf, birth_date, plan_id]
+      );
+    });
+
+    await Promise.all(insertPromises);
+    res.status(201).json({ message: 'Pacientes importados com sucesso.' });
+  } catch (error) {
+    console.error('Erro ao importar pacientes:', error);
+    res.status(500).json({ error: 'Erro ao importar pacientes.' });
+  }
+};
+
+

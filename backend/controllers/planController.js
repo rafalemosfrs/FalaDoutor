@@ -29,3 +29,23 @@ exports.remove = async (req, res) => {
   await db.query('DELETE FROM plans WHERE id = $1', [id]);
   res.status(204).end();
 };
+
+exports.bulkInsert = async (req, res) => {
+  const plans = req.body;
+
+  try {
+    const insertPromises = plans.map(({ name, base_value }) => {
+      const value = parseFloat(base_value) || 0;
+      return db.query(
+        'INSERT INTO plans (name, base_value) VALUES ($1, $2)',
+        [name, value]
+      );
+    });
+
+    await Promise.all(insertPromises);
+    res.status(201).json({ message: 'Planos importados com sucesso.' });
+  } catch (error) {
+    console.error('Erro ao importar planos:', error);
+    res.status(500).json({ error: 'Erro ao importar planos.' });
+  }
+};

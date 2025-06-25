@@ -29,3 +29,25 @@ exports.remove = async (req, res) => {
   await db.query('DELETE FROM doctors WHERE id = $1', [id]);
   res.status(204).end();
 };
+
+exports.bulkInsert = async (req, res) => {
+  const doctors = req.body;
+
+  try {
+    const insertPromises = doctors.map(({ name, cpf, crm, birth_date }) => {
+      return db.query(
+        'INSERT INTO doctors (name, cpf, crm, birth_date) VALUES ($1, $2, $3, $4)',
+        [name, cpf, crm, birth_date]
+      );
+    });
+
+    await Promise.all(insertPromises);
+    res.status(201).json({ message: 'Médicos importados com sucesso.' });
+  } catch (error) {
+    console.error('Erro ao importar médicos:', error);
+    res.status(500).json({ error: 'Erro ao importar médicos.' });
+  }
+};
+
+
+

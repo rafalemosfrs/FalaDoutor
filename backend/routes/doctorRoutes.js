@@ -6,5 +6,6 @@ router.get('/', controller.getAll);
 router.post('/', controller.create);
 router.put('/:id', controller.update);
 router.delete('/:id', controller.remove);
+router.post('/bulk', controller.bulkInsert);
 
 module.exports = router;

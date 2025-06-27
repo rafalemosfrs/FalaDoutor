@@ -1,109 +1,158 @@
+import { useState } from 'react';
 import { useData } from '../../context/DataContext';
+import { FaEdit, FaTrash } from 'react-icons/fa';
 
 const ReportsList = () => {
-  const { 
-    doctors,
-    patients,
-    plans 
-  } = useData();
+  const { doctors, patients, plans } = useData();
+  const [filters, setFilters] = useState({
+    medico_id: '',
+    paciente_id: '',
+    plano_id: '',
+    start_date: '',
+    end_date: ''
+  });
+  const [consults, setConsults] = useState([]);
 
-  const doctorsOver50 = doctors.filter(d => {
-    const birthYear = parseInt(d.birth_date?.split('-')[0]);
-    const age = new Date().getFullYear() - birthYear;
-    return age > 50;
-  });
-  const patientsOver50 = patients.filter(p => {
-    const birthYear = parseInt(p.birth_date?.split('-')[0]);
-    const age = new Date().getFullYear() - birthYear;
-    return age > 50;
-  });
-  const patientsByPlan = {};
-  patients.forEach(p => {
-    const plan = plans.find(pl => pl.id === p.plan_id);
-    if (plan) {
-      patientsByPlan[plan.name] = (patientsByPlan[plan.name] || 0) + 1;
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFilters(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSearch = async () => {
+    const cleanedFilters = Object.fromEntries(
+      Object.entries(filters).filter(([_, v]) => v !== '')
+    );
+
+    const query = new URLSearchParams(cleanedFilters).toString();
+    console.log('Filtros aplicados:', cleanedFilters);
+
+    const res = await fetch(`http://localhost:5000/api/consults?${query}`);
+    const data = await res.json();
+    setConsults(data);
+  };
+
+  const handleDelete = async (id) => {
+    if (window.confirm('Deseja realmente excluir esta consulta?')) {
+      await fetch(`http://localhost:5000/api/consults/${id}`, { method: 'DELETE' });
+      handleSearch();
     }
-  });
-  const patientsWithPlanOver89 = patients.filter(p => {
-    const plan = plans.find(pl => pl.id === p.plan_id);
-    return plan && plan.base_value > 89;
-  });
+  };
 
   return (
     <div className="space-y-6 max-h-[600px] overflow-y-auto pr-2">
-      <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-        <h3 className="text-lg font-semibold text-blue-800 mb-3">
-          Médicos acima de 50 anos
-        </h3>
-        <div className="text-2xl font-bold text-blue-600 mb-2">
-          {doctorsOver50.length}
-        </div>
-        {doctorsOver50.length > 0 && (
-          <div className="space-y-1">
-            <p className="text-sm text-blue-700 font-medium">Lista:</p>
-            <ul className="text-sm text-blue-600">
-              {doctorsOver50.map(doctor => (
-                <li key={doctor.id}>• {doctor.name}</li>
+      <div className="bg-white p-4 rounded-lg border shadow">
+        <h3 className="text-lg font-semibold mb-4">🔎 Filtros de Consultas</h3>
+        <div className="grid md:grid-cols-2 gap-4">
+          <div>
+            <label className="form-label">Médico</label>
+            <select
+              name="medico_id"
+              value={filters.medico_id}
+              onChange={e => handleChange({ target: { name: 'medico_id', value: Number(e.target.value) || '' } })}
+              className="input-field"
+            >
+              <option value="">Todos</option>
+              {[...doctors].sort((a, b) => a.name.localeCompare(b.name)).map((doctor) => (
+                <option key={doctor.id} value={doctor.id}>{doctor.name}</option>
               ))}
-            </ul>
+            </select>
           </div>
-        )}
-      </div>
 
-      <div className="bg-green-50 p-4 rounded-lg border border-green-200">
-        <h3 className="text-lg font-semibold text-green-800 mb-3">
-          Quantidade de Pacientes por Plano
-        </h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {plans.map(plan => (
-            <div key={plan.name} className="text-center">
-              <div className="text-xl font-bold text-green-600">
-                {patientsByPlan[plan.name] || 0}
-              </div>
-              <div className="text-sm text-green-700">{plan.name}</div>
-              <div className="text-xs text-green-600">
-                R$ {Number(plan.base_value || 0).toFixed(2)}
-              </div>
+          <div>
+            <label className="form-label">Paciente</label>
+            <select
+              name="paciente_id"
+              value={filters.paciente_id}
+              onChange={e => handleChange({ target: { name: 'paciente_id', value: Number(e.target.value) || '' } })}
+              className="input-field"
+            >
+              <option value="">Todos</option>
+              {[...patients].sort((a, b) => a.name.localeCompare(b.name)).map((patient) => (
+                <option key={patient.id} value={patient.id}>{patient.name}</option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="form-label">Plano</label>
+            <select
+              name="plano_id"
+              value={filters.plano_id}
+              onChange={e => handleChange({ target: { name: 'plano_id', value: Number(e.target.value) || '' } })}
+              className="input-field"
+            >
+              <option value="">Todos</option>
+              {[...plans].sort((a, b) => a.name.localeCompare(b.name)).map((plan) => (
+                <option key={plan.id} value={plan.id}>{plan.name}</option>
+              ))}
+            </select>
+          </div>
+
+          <div className="flex gap-2">
+            <div>
+              <label className="form-label">De</label>
+              <input
+                type="date"
+                name="start_date"
+                value={filters.start_date}
+                onChange={handleChange}
+                className="input-field"
+              />
             </div>
-          ))}
+            <div>
+              <label className="form-label">Até</label>
+              <input
+                type="date"
+                name="end_date"
+                value={filters.end_date}
+                onChange={handleChange}
+                className="input-field"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-4">
+          <button onClick={handleSearch} className="btn btn-primary">Buscar</button>
         </div>
       </div>
 
-      <div className="bg-orange-50 p-4 rounded-lg border border-orange-200">
-        <h3 className="text-lg font-semibold text-orange-800 mb-3">
-          Pacientes acima de 50 anos
-        </h3>
-        <div className="text-2xl font-bold text-orange-600 mb-2">
-          {patientsOver50.length}
-        </div>
-        {patientsOver50.length > 0 && (
-          <div className="space-y-1">
-            <p className="text-sm text-orange-700 font-medium">Lista:</p>
-            <ul className="text-sm text-orange-600">
-              {patientsOver50.map(patient => (
-                <li key={patient.id}>• {patient.name}</li>
+      <div className="bg-white p-4 rounded-lg border shadow">
+        <h3 className="text-lg font-semibold mb-4">📋 Resultados</h3>
+        {consults.length === 0 ? (
+          <p className="text-sm text-gray-500">Nenhuma consulta encontrada.</p>
+        ) : (
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-4 py-2 text-left text-xs text-gray-500">Data</th>
+                <th className="px-4 py-2 text-left text-xs text-gray-500">Médico</th>
+                <th className="px-4 py-2 text-left text-xs text-gray-500">Paciente</th>
+                <th className="px-4 py-2 text-left text-xs text-gray-500">Plano</th>
+                <th className="px-4 py-2 text-center text-xs text-gray-500">Ações</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {[...consults]
+                .sort((a, b) => new Date(a.data).getTime() - new Date(b.data).getTime())
+                .map((consult) => (
+                  <tr key={consult.id}>
+                    <td className="px-4 text-black py-2">{new Date(consult.data).toLocaleDateString('pt-BR')}</td>
+                    <td className="px-4 text-black py-2">{consult.doctor_name}</td>
+                    <td className="px-4 text-black py-2">{consult.patient_name}</td>
+                    <td className="px-4 text-black py-2">{consult.plan_name}</td>
+                    <td className="px-4 py-2 text-center">
+                      <button className="text-blue-600 hover:text-blue-800 mr-2">
+                        <FaEdit />
+                      </button>
+                      <button onClick={() => handleDelete(consult.id)} className="text-red-600 hover:text-red-800">
+                        <FaTrash />
+                      </button>
+                    </td>
+                  </tr>
               ))}
-            </ul>
-          </div>
-        )}
-      </div>
-
-      <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
-        <h3 className="text-lg font-semibold text-purple-800 mb-3">
-          Pacientes com plano acima de R$ 89,00
-        </h3>
-        <div className="text-2xl font-bold text-purple-600 mb-2">
-          {patientsWithPlanOver89.length}
-        </div>
-        {patientsWithPlanOver89.length > 0 && (
-          <div className="space-y-1">
-            <p className="text-sm text-purple-700 font-medium">Lista:</p>
-            <ul className="text-sm text-purple-600">
-              {patientsWithPlanOver89.map(patient => (
-                <li key={patient.id}>• {patient.name} {patient.plan}</li>
-              ))}
-            </ul>
-          </div>
+            </tbody>
+          </table>
         )}
       </div>
     </div>

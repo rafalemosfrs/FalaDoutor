@@ -73,7 +73,10 @@ const PatientList = () => {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {Array.isArray(patients) && patients.map((patient) => (
+            {Array.isArray(patients) && [...patients]
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .map((patient) => (
+
               <tr key={patient.id} className="hover:bg-gray-50">
                 <td className="text-black px-6 py-4 whitespace-nowrap">{patient.name}</td>
                 <td className="text-black px-6 py-4 whitespace-nowrap">{patient.cpf}</td>

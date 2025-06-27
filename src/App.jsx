@@ -6,6 +6,7 @@ import DoctorCard from './components/doctors/DoctorCard'
 import PatientCard from './components/patients/PatientCard'
 import PlanCard from './components/plans/PlanCard'
 import ReportsCard from './components/reports/ReportsCard'
+import ConsultCard from './components/consults/ConsultCard'
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
             <PatientCard />
             <PlanCard />
             <ReportsCard />
+            <ConsultCard />
           </div>
         </main>
       </div>

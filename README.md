@@ -17,6 +17,9 @@
 - [Dotenv](https://github.com/motdotla/dotenv)
 - [Vite](https://vite.dev/)
 - [Context API](https://reactjs.org/docs/context-api.html)
+- [React Select](https://react-select.com/)
+- [React Icons](https://react-icons.github.io/react-icons/)
+- [React Date Picker](https://reactdatepicker.com/)
 
 ## 🎯 Funcionalidades
 
@@ -29,6 +32,10 @@
 - Importação de dados via Excel
 - Cartões expansíveis para melhor usabilidade
 - Gráficos de relatórios
+- Formulários com validação
+- Feedback visual para ações CRUD (edição, exclusão, criação e leitura)
+- Interface responsiva
+
 
 ## 🖼️ Layout
 
@@ -37,6 +44,7 @@ A interface apresenta quatro cartões principais:
 - **Pacientes**: abas para listar e cadastrar pacientes
 - **Planos de Saúde**: abas para listar planos de saúde
 - **Relatórios**: abas para listar relatórios
+- **Consultas**: abas para listar e cadastrar consultas
 
 Cada cartão pode ser expandido ou recolhido e traz recursos como:
 - Validação de formulários
@@ -44,6 +52,8 @@ Cada cartão pode ser expandido ou recolhido e traz recursos como:
 - Estilização consistente com Tailwind
 - Importação de dados via Excel
 - Gráficos de relatórios
+- Formulários com validação
+- Interface responsiva
 
 ## 🚀 Como Rodar o Projeto
 Clone o repositório:
@@ -78,13 +88,15 @@ npm run dev
 
 ```bash
 backend/
-├── controllers/          
+├── controllers/     
+│   ├── consultsController.js
 │   ├── doctorsController.js         
 │   ├── patientsController.js        
 │   ├── plansController.js           
 │   └── reportController.js         
 ├── models/
 ├── routes/                
+│   ├── consultsRoutes.js
 │   ├── doctorsRoutes.js        
 │   ├── patientsRoutes.js           
 │   ├── plansRoutes.js           
@@ -119,6 +131,10 @@ src/
 │      ├── ReportsBarChart.jsx
 │      ├── ReportsPieChart.jsx
 │      └── ReportsList.jsx
+│   ├── consults/
+│      ├── ConsultCard.jsx
+│      ├── ConsultForm.jsx
+│      └── ConsultList.jsx
 │   └── Header.jsx
 │
 ├── context/
@@ -139,5 +155,12 @@ O projeto utiliza Context API para armazenar e manipular dados de médicos e pac
 
 ## ✨ Melhorias Futuras
 
-- Filtro e busca em listas
 - Responsividade aprimorada para mobile
+- Melhorias na interface de edição e exclusão
+- Melhorias na interface de cadastro e edição
+- Melhorias na interface de relatórios
+- Melhorias na interface de consultas
+- Melhorias na interface de planos de saúde
+- Melhorias na interface de médicos
+- Melhorias na interface de pacientes
+

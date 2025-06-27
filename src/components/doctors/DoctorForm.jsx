@@ -1,21 +1,33 @@
 import { useState, useEffect } from 'react';
+import Select from 'react-select';
 import { useData } from '../../context/DataContext';
 
 const initialFormState = {
   name: '',
   cpf: '',
   birth_date: '',
-  crm: ''
+  crm: '',
+  especialidade: '',
+  plan_ids: []
 };
 
 const DoctorForm = ({ doctor = null, onSaved = null }) => {
-  const { addDoctor, updateDoctor } = useData();
+  const { addDoctor, updateDoctor, plans } = useData();
   const [formData, setFormData] = useState(initialFormState);
   const [errors, setErrors] = useState({});
 
+  const planOptions = plans.map(plan => ({
+    value: plan.id,
+    label: plan.name
+  }));
+
   useEffect(() => {
     if (doctor) {
-      setFormData(doctor);
+      setFormData({
+        ...doctor,
+        plan_ids: doctor.plan_ids || [],
+        especialidade: doctor.especialidade || ''
+      });
     }
   }, [doctor]);
 
@@ -40,6 +52,10 @@ const DoctorForm = ({ doctor = null, onSaved = null }) => {
       newErrors.crm = 'CRM é obrigatório';
     }
 
+    if (!formData.especialidade.trim()) {
+      newErrors.especialidade = 'Especialidade é obrigatória';
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -51,6 +67,11 @@ const DoctorForm = ({ doctor = null, onSaved = null }) => {
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: undefined }));
     }
+  };
+
+  const handlePlansChange = (selectedOptions) => {
+    const selectedIds = selectedOptions.map(option => option.value);
+    setFormData(prev => ({ ...prev, plan_ids: selectedIds }));
   };
 
   const handleSubmit = (e) => {
@@ -72,7 +93,11 @@ const DoctorForm = ({ doctor = null, onSaved = null }) => {
   };
 
   const handleReset = () => {
-    setFormData(doctor ? doctor : initialFormState);
+    setFormData(doctor ? {
+      ...doctor,
+      plan_ids: doctor.plan_ids || [],
+      especialidade: doctor.especialidade || ''
+    } : initialFormState);
     setErrors({});
   };
 
@@ -131,6 +156,68 @@ const DoctorForm = ({ doctor = null, onSaved = null }) => {
           className={`input-field ${errors.crm ? 'border-red-500' : ''}`}
         />
         {errors.crm && <p className="mt-1 text-sm text-red-600">{errors.crm}</p>}
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="especialidade" className="form-label">Especialidade</label>
+        <input
+          type="text"
+          id="especialidade"
+          name="especialidade"
+          placeholder="Ex: Clínico Geral"
+          value={formData.especialidade}
+          onChange={handleChange}
+          className={`input-field ${errors.especialidade ? 'border-red-500' : ''}`}
+        />
+        {errors.especialidade && <p className="mt-1 text-sm text-red-600">{errors.especialidade}</p>}
+      </div>
+
+      <div className="form-group">
+        <label className="form-label">Planos Atendidos</label>
+        <Select
+          isMulti
+          options={planOptions}
+          value={planOptions.filter(opt => formData.plan_ids.includes(opt.value))}
+          onChange={handlePlansChange}
+          placeholder="Selecione os planos..."
+          styles={{
+            control: (base) => ({
+              ...base,
+              borderColor: '#3b82f6',
+              boxShadow: 'none',
+              '&:hover': { borderColor: '#2563eb' },
+            }),
+            menu: (base) => ({
+              ...base,
+              zIndex: 100,
+              backgroundColor: '#f9fafb',
+              border: '1px solid #e5e7eb',
+              borderRadius: 6,
+              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+            }),
+            multiValue: (base) => ({
+              ...base,
+              backgroundColor: '#e0f2fe',
+            }),
+            multiValueLabel: (base) => ({
+              ...base,
+              color: '#0369a1',
+              fontWeight: 500,
+            }),
+            option: (base, state) => ({
+              ...base,
+              backgroundColor: state.isFocused ? '#e0f2fe' : undefined,
+              color: '#111827',
+              fontSize: '0.875rem',
+              padding: 10,
+            }),
+            menuList: (base) => ({
+              ...base,
+              maxHeight: '180px',
+              overflowY: 'auto',  
+            }),
+          }}
+        />
       </div>
 
       <div className="flex space-x-3">

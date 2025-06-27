@@ -70,7 +70,7 @@ const ConsultForm = ({ onSaved = null }) => {
           name="date"
           value={formData.date}
           onChange={handleChange}
-          className="input-field"
+          className="input-field bg-white text-black"
         />
       </div>
 
@@ -80,12 +80,14 @@ const ConsultForm = ({ onSaved = null }) => {
           name="plan_id"
           value={formData.plan_id}
           onChange={handleChange}
-          className="input-field"
+          className="input-field bg-white text-black"
         >
           <option value="">Selecione</option>
-          {plans.map(p => (
-            <option key={p.id} value={p.id}>{p.name}</option>
-          ))}
+          {[...plans]
+            .sort((a, b) => a.name.localeCompare(b.name))
+            .map((plan) => (
+              <option key={plan.id} value={plan.id}>{plan.name}</option>
+            ))}
         </select>
       </div>
 
@@ -95,12 +97,14 @@ const ConsultForm = ({ onSaved = null }) => {
           name="doctor_id"
           value={formData.doctor_id}
           onChange={handleChange}
-          className="input-field"
+          className="input-field bg-white text-black"
         >
           <option value="">Selecione</option>
-          {filteredDoctors.map(d => (
-            <option key={d.id} value={d.id}>{d.name}</option>
-          ))}
+          {[...filteredDoctors]
+            .sort((a, b) => a.name.localeCompare(b.name))
+            .map((doctor) => (
+              <option key={doctor.id} value={doctor.id}>{doctor.name}</option>
+            ))}
         </select>
       </div>
 
@@ -110,12 +114,14 @@ const ConsultForm = ({ onSaved = null }) => {
           name="patient_id"
           value={formData.patient_id}
           onChange={handleChange}
-          className="input-field"
+          className="input-field bg-white text-black"
         >
           <option value="">Selecione</option>
-          {filteredPatients.map(p => (
-            <option key={p.id} value={p.id}>{p.name}</option>
-          ))}
+          {[...filteredPatients]
+            .sort((a, b) => a.name.localeCompare(b.name))
+            .map((patient) => (
+              <option key={patient.id} value={patient.id}>{patient.name}</option>
+            ))}
         </select>
       </div>
 

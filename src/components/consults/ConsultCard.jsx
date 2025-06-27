@@ -3,11 +3,20 @@ import ExpandableCard from '../common/ExpandableCard';
 import TabPanel from '../common/TabPanel';
 import ConsultList from './ConsultList';
 import ConsultForm from './ConsultForm';
+import BulkUpload from '../common/BulkUpload';
 
 const ConsultCard = () => {
   const tabs = [
     { label: 'Lista', content: <ConsultList /> },
-    { label: 'Cadastro', content: <ConsultForm /> }
+    {
+      label: 'Cadastro',
+      content: (
+        <div className="space-y-6">
+          <BulkUpload endpoint="/api/consults/bulk" />
+          <ConsultForm />
+        </div>
+      )
+    }
   ];
 
   return (

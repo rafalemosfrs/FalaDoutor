@@ -1,21 +1,34 @@
+import { useState } from 'react';
 import { FaUserInjured } from 'react-icons/fa';
 import ExpandableCard from '../common/ExpandableCard';
 import TabPanel from '../common/TabPanel';
 import PatientList from './PatientList';
 import PatientForm from './PatientForm';
 import BulkUpload from '../common/BulkUpload';
+import { useData } from '../../context/DataContext';
 
 const PatientCard = () => {
+  const { fetchPatients } = useData();
+  const [refreshKey, setRefreshKey] = useState(0); // ✅ força recarregamento
+
+  const handleSuccess = async () => {
+    await fetchPatients();
+    setRefreshKey(prev => prev + 1); // ✅ força o React a re-renderizar os componentes filhos
+  };
+
   const tabs = [
     {
       label: 'Lista',
-      content: <PatientList />
+      content: <PatientList key={refreshKey} />
     },
     {
       label: 'Cadastro',
       content: (
         <div className="space-y-6">
-          <BulkUpload endpoint="patients" />
+          <BulkUpload 
+            endpoint="/api/patients/bulk" 
+            onSuccess={handleSuccess}
+          />
           <PatientForm />
         </div>
       )

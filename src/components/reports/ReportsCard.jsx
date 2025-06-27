@@ -8,7 +8,7 @@ import ReportsBarChart from './ReportsBarChart';
 const ReportsCard = () => {
   const tabs = [
     {
-      label: 'Lista',
+      label: 'Filtros',
       content: <ReportsList />
     },
     {

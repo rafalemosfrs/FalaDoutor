@@ -41,7 +41,7 @@ const ReportsList = () => {
   return (
     <div className="space-y-6 max-h-[600px] overflow-y-auto pr-2">
       <div className="bg-white p-4 rounded-lg border shadow">
-        <h3 className="text-lg font-semibold mb-4">🔎 Filtros de Consultas</h3>
+        <h3 className="text-lg text-black font-semibold mb-4">🔎 Filtros de Consultas</h3>
         <div className="grid md:grid-cols-2 gap-4">
           <div>
             <label className="form-label">Médico</label>

@@ -102,6 +102,7 @@ const DoctorForm = ({ doctor = null, onSaved = null }) => {
   };
 
   return (
+    <div className="bg-white p-6 rounded-lg shadow-md">    
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="form-group">
         <label htmlFor="name" className="form-label">Nome</label>
@@ -112,7 +113,7 @@ const DoctorForm = ({ doctor = null, onSaved = null }) => {
           placeholder="Exemplo da Silva"
           value={formData.name}
           onChange={handleChange}
-          className={`input-field ${errors.name ? 'border-red-500' : ''}`}
+          className={`input-field bg-white text-black ${errors.name ? 'border-red-500' : ''}`}
         />
         {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name}</p>}
       </div>
@@ -126,7 +127,7 @@ const DoctorForm = ({ doctor = null, onSaved = null }) => {
           placeholder="123.456.789-00"
           value={formData.cpf}
           onChange={handleChange}
-          className={`input-field ${errors.cpf ? 'border-red-500' : ''}`}
+          className={`input-field bg-white text-black ${errors.cpf ? 'border-red-500' : ''}`}
         />
         {errors.cpf && <p className="mt-1 text-sm text-red-600">{errors.cpf}</p>}
       </div>
@@ -137,9 +138,10 @@ const DoctorForm = ({ doctor = null, onSaved = null }) => {
           type="date"
           id="birth_date"
           name="birth_date"
+          placeholder="dd/mm/yyyy"
           value={formData.birth_date}
           onChange={handleChange}
-          className={`input-field ${errors.birth_date ? 'border-red-500' : ''}`}
+          className={`input-field bg-white text-black ${errors.birth_date ? 'border-red-500' : ''}`}
         />
         {errors.birth_date && <p className="mt-1 text-sm text-red-600">{errors.birth_date}</p>}
       </div>
@@ -153,23 +155,9 @@ const DoctorForm = ({ doctor = null, onSaved = null }) => {
           placeholder="CRM-UF 12345"
           value={formData.crm}
           onChange={handleChange}
-          className={`input-field ${errors.crm ? 'border-red-500' : ''}`}
+          className={`input-field bg-white text-black ${errors.crm ? 'border-red-500' : ''}`}
         />
         {errors.crm && <p className="mt-1 text-sm text-red-600">{errors.crm}</p>}
-      </div>
-
-      <div className="form-group">
-        <label htmlFor="especialidade" className="form-label">Especialidade</label>
-        <input
-          type="text"
-          id="especialidade"
-          name="especialidade"
-          placeholder="Ex: Clínico Geral"
-          value={formData.especialidade}
-          onChange={handleChange}
-          className={`input-field ${errors.especialidade ? 'border-red-500' : ''}`}
-        />
-        {errors.especialidade && <p className="mt-1 text-sm text-red-600">{errors.especialidade}</p>}
       </div>
 
       <div className="form-group">
@@ -214,10 +202,25 @@ const DoctorForm = ({ doctor = null, onSaved = null }) => {
             menuList: (base) => ({
               ...base,
               maxHeight: '180px',
-              overflowY: 'auto',  
+              overflowY: 'auto', 
+              overflowX: 'hidden', 
             }),
           }}
         />
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="especialidade" className="form-label">Especialidade</label>
+        <input
+          type="text"
+          id="especialidade"
+          name="especialidade"
+          placeholder="Ex: Clínico Geral"
+          value={formData.especialidade}
+          onChange={handleChange}
+          className={`input-field bg-white text-black ${errors.especialidade ? 'border-red-500' : ''}`}
+        />
+        {errors.especialidade && <p className="mt-1 text-sm text-red-600">{errors.especialidade}</p>}
       </div>
 
       <div className="flex space-x-3">
@@ -229,7 +232,8 @@ const DoctorForm = ({ doctor = null, onSaved = null }) => {
         </button>
       </div>
     </form>
+    </div>
   );
-};
+}; 
 
 export default DoctorForm;

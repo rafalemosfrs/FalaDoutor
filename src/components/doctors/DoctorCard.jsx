@@ -1,21 +1,34 @@
+import { useState } from 'react';
 import { FaUserMd } from 'react-icons/fa';
 import ExpandableCard from '../common/ExpandableCard';
 import TabPanel from '../common/TabPanel';
 import DoctorList from './DoctorList';
 import DoctorForm from './DoctorForm';
 import BulkUpload from '../common/BulkUpload';
+import { useData } from '../../context/DataContext';
 
 const DoctorCard = () => {
+  const { fetchDoctors } = useData();
+  const [refreshKey, setRefreshKey] = useState(0); // ✅ controla atualização do conteúdo
+
+  const handleSuccess = async () => {
+    await fetchDoctors();
+    setRefreshKey(prev => prev + 1); // ✅ força re-render de DoctorList
+  };
+
   const tabs = [
     {
       label: 'Lista',
-      content: <DoctorList />
+      content: <DoctorList key={refreshKey} />
     },
     {
       label: 'Cadastro',
       content: (
         <div className="space-y-6">
-          <BulkUpload endpoint="doctors" />
+          <BulkUpload
+            endpoint="/api/doctors/bulk"
+            onSuccess={handleSuccess}
+          />
           <DoctorForm />
         </div>
       )

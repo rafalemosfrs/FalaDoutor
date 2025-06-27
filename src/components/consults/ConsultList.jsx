@@ -34,7 +34,7 @@ const ConsultList = () => {
   };
 
   return (
-    <div className="overflow-x-auto">
+    <div className="space-y-6 max-h-[600px] overflow-y-auto pr-2">
       {editing ? (
         <div className="mb-6">
           <h3 className="text-lg font-semibold mb-4 text-gray-800">Editar Consulta</h3>

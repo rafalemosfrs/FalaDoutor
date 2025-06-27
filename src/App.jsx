@@ -18,8 +18,8 @@ function App() {
             <DoctorCard />
             <PatientCard />
             <PlanCard />
-            <ReportsCard />
             <ConsultCard />
+            <ReportsCard />
           </div>
         </main>
       </div>

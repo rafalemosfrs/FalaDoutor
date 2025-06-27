@@ -7,10 +7,10 @@ exports.getAll = async (req, res) => {
 
 exports.create = async (req, res) => {
   const { name, cpf, birth_date, plan_id } = req.body;
-const result = await db.query(
-  'INSERT INTO patients (name, cpf, birth_date, plan_id) VALUES ($1, $2, $3, $4) RETURNING *',
-  [name, cpf, birth_date, plan_id]
-);
+  const result = await db.query(
+    'INSERT INTO patients (name, cpf, birth_date, plan_id) VALUES ($1, $2, $3, $4) RETURNING *',
+    [name, cpf, birth_date, plan_id]
+  );
   res.status(201).json(result.rows[0]);
 };
 
@@ -34,7 +34,13 @@ exports.bulkInsert = async (req, res) => {
   const patients = req.body;
 
   try {
-    const insertPromises = patients.map(({ name, cpf, birth_date, plan_id }) => {
+    console.log('📥 Dados recebidos para importação de pacientes:', patients);
+
+    const insertPromises = patients.map(({ name, cpf, birth_date, plan_id }, index) => {
+      if (!name || !cpf || !birth_date || !plan_id) {
+        throw new Error(`Dados incompletos no paciente na linha ${index + 1}`);
+      }
+
       return db.query(
         'INSERT INTO patients (name, cpf, birth_date, plan_id) VALUES ($1, $2, $3, $4)',
         [name, cpf, birth_date, plan_id]
@@ -43,10 +49,10 @@ exports.bulkInsert = async (req, res) => {
 
     await Promise.all(insertPromises);
     res.status(201).json({ message: 'Pacientes importados com sucesso.' });
+
   } catch (error) {
-    console.error('Erro ao importar pacientes:', error);
-    res.status(500).json({ error: 'Erro ao importar pacientes.' });
+    console.error('❌ Erro ao importar pacientes:', error.message);
+    console.error(error.stack);
+    res.status(500).json({ error: error.message });
   }
 };
-
-

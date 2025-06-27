@@ -55,7 +55,6 @@ export const DataProvider = ({ children }) => {
     try {
       const response = await axios.get('http://localhost:5000/api/doctors');
       const data = response.data;
-
       if (Array.isArray(data)) {
         setDoctors(data);
       } else {
@@ -146,7 +145,9 @@ export const DataProvider = ({ children }) => {
       deletePatient,
       addPlan,
       updatePlan,
-      deletePlan
+      deletePlan,
+      fetchDoctors,     // ✅ agora disponível no contexto
+      fetchPatients     // ✅ agora disponível no contexto
     }}>
       {children}
     </DataContext.Provider>

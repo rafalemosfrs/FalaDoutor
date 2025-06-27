@@ -1,6 +1,6 @@
 # 🩺 Fala Doutor
 
-**Fala Doutor** é uma aplicação web construída com React e TailwindCSS para cadastro, listagem e gerenciamento de médicos e pacientes. Ela oferece uma interface simples e intuitiva, com recursos de formulário, edição e exclusão de registros.
+**Fala Doutor** é uma aplicação web moderna desenvolvida com React e Node.js, que permite o gerenciamento completo de médicos, pacientes, planos de saúde, relatórios e consultas. O projeto é composto por uma API RESTful no backend (Express + PostgreSQL) e uma interface SPA no frontend (React + TailwindCSS).
 
 ## 📦 Tecnologias Utilizadas
 
@@ -21,20 +21,17 @@
 - [React Icons](https://react-icons.github.io/react-icons/)
 - [React Date Picker](https://reactdatepicker.com/)
 
-## 🎯 Funcionalidades
+## 🔥 Destaques e Funcionalidades
 
-- Listagem e cadastro de médicos (nome, CPF, data de nascimento, CRM)
-- Listagem e cadastro de pacientes (nome, CPF, data de nascimento, plano de saúde)
-- Listagem e cadastro de planos de saúde (nome, valor)
-- Listagem de relatórios (filtros gerais)
-- Edição e exclusão de registros
-- Interface com abas (Lista/Cadastro)
-- Importação de dados via Excel
-- Cartões expansíveis para melhor usabilidade
-- Gráficos de relatórios
-- Formulários com validação
-- Feedback visual para ações CRUD (edição, exclusão, criação e leitura)
-- Interface responsiva
+- 📋 CRUD completo para **médicos**, **pacientes**, **planos** e **consultas**
+- 📌 Múltiplos planos de saúde por médico
+- 📚 Relatórios com gráficos de barras e pizza
+- 📎 Upload em massa via Excel
+- 📅 Seletores de data e campos com máscaras (CPF)
+- ✅ Validações de formulário e feedback visual
+- 💡 Interface em abas (lista/cadastro) com cartões expansíveis
+- 🎨 Estilização com Tailwind CSS e responsividade
+- 🌐 Backend Express com PostgreSQL e Knex.js
 
 
 ## 🖼️ Layout
@@ -43,8 +40,8 @@ A interface apresenta quatro cartões principais:
 - **Médicos**: abas para listar e cadastrar médicos
 - **Pacientes**: abas para listar e cadastrar pacientes
 - **Planos de Saúde**: abas para listar planos de saúde
-- **Relatórios**: abas para listar relatórios
 - **Consultas**: abas para listar e cadastrar consultas
+- **Relatórios**: abas para listar relatórios
 
 Cada cartão pode ser expandido ou recolhido e traz recursos como:
 - Validação de formulários
@@ -53,7 +50,6 @@ Cada cartão pode ser expandido ou recolhido e traz recursos como:
 - Importação de dados via Excel
 - Gráficos de relatórios
 - Formulários com validação
-- Interface responsiva
 
 ## 🚀 Como Rodar o Projeto
 Clone o repositório:
@@ -155,12 +151,12 @@ O projeto utiliza Context API para armazenar e manipular dados de médicos e pac
 
 ## ✨ Melhorias Futuras
 
+- Autenticação e controle de permissões
+- Filtros avançados nos relatórios
+- Dashboard com métricas
+- Integração com agenda de consultas
 - Responsividade aprimorada para mobile
-- Melhorias na interface de edição e exclusão
-- Melhorias na interface de cadastro e edição
-- Melhorias na interface de relatórios
-- Melhorias na interface de consultas
-- Melhorias na interface de planos de saúde
-- Melhorias na interface de médicos
-- Melhorias na interface de pacientes
 
+---
+
+Desenvolvido com 💙 por Rafael Lemos.

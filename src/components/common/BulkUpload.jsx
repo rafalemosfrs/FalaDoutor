@@ -3,7 +3,7 @@ import Papa from 'papaparse';
 import * as XLSX from 'xlsx';
 import axios from 'axios';
 
-const BulkUpload = ({ endpoint }) => {
+const BulkUpload = ({ endpoint, onSuccess }) => {
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -42,13 +42,32 @@ const BulkUpload = ({ endpoint }) => {
   };
 
   const sendData = async (data) => {
+    if (!endpoint || typeof endpoint !== 'string') {
+      alert('Endpoint de importação não definido corretamente.');
+      return;
+    }
+
     try {
-      const res = await axios.post(`http://localhost:5000/api/${endpoint}/bulk`, data);
-      alert(`Importação concluída: ${res.data.message || 'sucesso'}`);
-      window.location.reload();
+      const sanitizedPath = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+      const fullUrl = endpoint.startsWith('http')
+        ? endpoint
+        : `http://localhost:5000${sanitizedPath}`;
+
+      const response = await axios.post(fullUrl, data);
+      alert('Importação concluída com sucesso!');
+      console.log('✅ Resposta do servidor:', response.data);
+
+      if (onSuccess && typeof onSuccess === 'function') {
+        onSuccess(); // chama função para atualizar dados na tela
+      }
     } catch (error) {
-      console.error('Erro na importação:', error);
-      alert('Erro ao importar dados. Verifique o console.');
+      console.error('❌ Erro na importação:', error);
+      if (error.response) {
+        console.error('Resposta do servidor:', error.response.data);
+        alert(`Erro: ${error.response.data.error || 'Erro na importação'}`);
+      } else {
+        alert('Erro de rede ou resposta inesperada');
+      }
     }
   };
 

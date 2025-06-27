@@ -72,7 +72,7 @@ const PlanForm = ({ plan = null, onSaved = null }) => {
           placeholder="Ex: Plano Premium"
           value={formData.name}
           onChange={handleChange}
-          className={`input-field ${error ? 'border-red-500' : ''}`}
+          className={`input-field bg-white text-black ${error ? 'border-red-500' : ''}`}
         />
         {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
       </div>
@@ -87,7 +87,7 @@ const PlanForm = ({ plan = null, onSaved = null }) => {
           placeholder="Ex: 89.90"
           value={formData.base_value}
           onChange={handleChange}
-          className="input-field"
+          className="input-field bg-white text-black"
         />
       </div>
 

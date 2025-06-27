@@ -20,8 +20,8 @@ exports.getAll = async (req, res) => {
 
     res.json(enrichedDoctors);
   } catch (error) {
-    console.error('Erro ao buscar médicos:', error);
-    res.status(500).json({ error: 'Erro ao buscar médicos.' });
+    console.error('Erro ao buscar médicos:', error.message, error.stack);
+    res.status(500).json({ error: error.message });
   }
 };
 
@@ -69,18 +69,58 @@ exports.bulkInsert = async (req, res) => {
   const doctors = req.body;
 
   try {
-    const insertPromises = doctors.map(({ name, cpf, crm, birth_date, especialidade }) => {
-      return db.query(
-        'INSERT INTO doctors (name, cpf, crm, birth_date, especialidade) VALUES ($1, $2, $3, $4, $5)',
-        [name, cpf, crm, birth_date, especialidade || null]
+    for (const doctor of doctors) {
+      const {
+        name,
+        cpf,
+        crm,
+        birth_date,
+        especialidade,
+        plan_ids = []
+      } = doctor;
+    
+      if (!name || !cpf || !crm || !birth_date || !especialidade) {
+        throw new Error(`Dados incompletos no médico: ${name || 'Sem nome'}`);
+      }
+    
+      const result = await db.query(
+        'INSERT INTO doctors (name, cpf, crm, birth_date, especialidade) VALUES ($1, $2, $3, $4, $5) RETURNING id',
+        [name, cpf, crm, birth_date, especialidade]
       );
-    });
+    
+      const doctorId = result.rows[0].id;
 
-    await Promise.all(insertPromises);
+      const parsedPlanIds = Array.isArray(plan_ids)
+        ? plan_ids
+        : typeof plan_ids === 'string'
+          ? plan_ids.split(',').map(p => parseInt(p.trim())).filter(n => !isNaN(n))
+          : [];
+
+      for (const planId of parsedPlanIds) {
+        await db.query(
+          'INSERT INTO doctor_plans (doctor_id, plan_id) VALUES ($1, $2)',
+          [doctorId, planId]
+        );
+      }
+
+      if (parsedPlanIds.length === 0 && plan_names.length > 0) {
+        for (const planName of plan_names) {
+          const planResult = await db.query('SELECT id FROM plans WHERE name = $1', [planName.trim()]);
+          const plan = planResult.rows[0];
+          if (plan) {
+            await db.query(
+              'INSERT INTO doctor_plans (doctor_id, plan_id) VALUES ($1, $2)',
+              [doctorId, plan.id]
+            );
+          }
+        }
+      }
+    }
+
     res.status(201).json({ message: 'Médicos importados com sucesso.' });
   } catch (error) {
-    console.error('Erro ao importar médicos:', error);
-    res.status(500).json({ error: 'Erro ao importar médicos.' });
+    console.error('Erro ao importar médicos:', error.message, error.stack);
+    res.status(500).json({ error: error.message });
   }
 };
 

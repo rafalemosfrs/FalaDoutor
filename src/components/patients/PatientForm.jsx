@@ -92,9 +92,10 @@ const PatientForm = ({ patient = null, onSaved = null }) => {
           type="text"
           id="name"
           name="name"
+          placeholder="Exemplo da Silva"
           value={formData.name}
           onChange={handleChange}
-          className={`input-field ${errors.name ? 'border-red-500' : ''}`}
+          className={`input-field bg-white text-black ${errors.name ? 'border-red-500' : ''}`}
         />
         {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name}</p>}
       </div>
@@ -108,7 +109,7 @@ const PatientForm = ({ patient = null, onSaved = null }) => {
           placeholder="123.456.789-00"
           value={formData.cpf}
           onChange={handleChange}
-          className={`input-field ${errors.cpf ? 'border-red-500' : ''}`}
+          className={`input-field bg-white text-black ${errors.cpf ? 'border-red-500' : ''}`}
         />
         {errors.cpf && <p className="mt-1 text-sm text-red-600">{errors.cpf}</p>}
       </div>
@@ -121,7 +122,7 @@ const PatientForm = ({ patient = null, onSaved = null }) => {
           name="birth_date"
           value={formData.birth_date}
           onChange={handleChange}
-          className={`input-field ${errors.birth_date ? 'border-red-500' : ''}`}
+          className={`input-field bg-white text-black ${errors.birth_date ? 'border-red-500' : ''}`}
         />
         {errors.birth_date && <p className="mt-1 text-sm text-red-600">{errors.birth_date}</p>}
       </div>
@@ -133,7 +134,7 @@ const PatientForm = ({ patient = null, onSaved = null }) => {
           name="plan_id"
           value={formData.plan_id}
           onChange={handleChange}
-          className={`input-field ${errors.plan_id ? 'border-red-500' : ''}`}
+          className={`input-field bg-white text-black ${errors.plan_id ? 'border-red-500' : ''}`}
         >
           <option value="">Selecione um plano</option>
           {plans.map(plan => (
@@ -148,7 +149,7 @@ const PatientForm = ({ patient = null, onSaved = null }) => {
           type="submit"
           className="btn btn-primary"
         >
-          {patient ? 'Atualizar' : 'Salvar'}
+          {patient ? 'Atualizar' : 'Salvar'}  
         </button>
         <button
           type="button"

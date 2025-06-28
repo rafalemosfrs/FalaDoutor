@@ -49,7 +49,7 @@ const ReportsList = () => {
               name="medico_id"
               value={filters.medico_id}
               onChange={e => handleChange({ target: { name: 'medico_id', value: Number(e.target.value) || '' } })}
-              className="input-field"
+              className="input-field bg-white text-black"
             >
               <option value="">Todos</option>
               {[...doctors].sort((a, b) => a.name.localeCompare(b.name)).map((doctor) => (
@@ -64,7 +64,7 @@ const ReportsList = () => {
               name="paciente_id"
               value={filters.paciente_id}
               onChange={e => handleChange({ target: { name: 'paciente_id', value: Number(e.target.value) || '' } })}
-              className="input-field"
+              className="input-field bg-white text-black"
             >
               <option value="">Todos</option>
               {[...patients].sort((a, b) => a.name.localeCompare(b.name)).map((patient) => (
@@ -79,7 +79,7 @@ const ReportsList = () => {
               name="plano_id"
               value={filters.plano_id}
               onChange={e => handleChange({ target: { name: 'plano_id', value: Number(e.target.value) || '' } })}
-              className="input-field"
+              className="input-field bg-white text-black"
             >
               <option value="">Todos</option>
               {[...plans].sort((a, b) => a.name.localeCompare(b.name)).map((plan) => (
@@ -96,7 +96,7 @@ const ReportsList = () => {
                 name="start_date"
                 value={filters.start_date}
                 onChange={handleChange}
-                className="input-field"
+                className="input-field bg-white text-black"
               />
             </div>
             <div>
@@ -106,7 +106,7 @@ const ReportsList = () => {
                 name="end_date"
                 value={filters.end_date}
                 onChange={handleChange}
-                className="input-field"
+                className="input-field bg-white text-black"
               />
             </div>
           </div>

@@ -53,21 +53,21 @@ exports.getAll = async (req, res) => {
 
 exports.create = async (req, res) => {
   try {
-    let { date, medico_id, paciente_id, plano_id } = req.body;
+    let { date, hora, medico_id, paciente_id, plano_id } = req.body;
 
     medico_id = parseInt(medico_id);
     paciente_id = parseInt(paciente_id);
     plano_id = parseInt(plano_id);
 
-    if (!date || !medico_id || !paciente_id || !plano_id) {
+    if (!date || !hora || !medico_id || !paciente_id || !plano_id ) {
       return res.status(400).json({ error: 'Campos obrigatórios ausentes ou inválidos.' });
     }
 
     const result = await db.query(
-      `INSERT INTO consults (data, medico_id, paciente_id, plano_id)
-       VALUES ($1, $2, $3, $4)
+      `INSERT INTO consults (data, hora, medico_id, paciente_id, plano_id)
+       VALUES ($1, $2, $3, $4, $5)
        RETURNING *`,
-      [date, medico_id, paciente_id, plano_id]
+      [date, hora, medico_id, paciente_id, plano_id]
     );
 
     res.status(201).json(result.rows[0]);
@@ -80,14 +80,14 @@ exports.create = async (req, res) => {
 exports.update = async (req, res) => {
   try {
     const { id } = req.params;
-    const { date, medico_id, paciente_id, plano_id } = req.body;
+    const { date, hora, medico_id, paciente_id, plano_id } = req.body;
 
     const result = await db.query(
       `UPDATE consults
-       SET data = $1, medico_id = $2, paciente_id = $3, plano_id = $4
-       WHERE id = $5
+       SET data = $1, hora = $2, medico_id = $3, paciente_id = $4, plano_id = $5
+       WHERE id = $6
        RETURNING *`,
-      [date, medico_id, paciente_id, plano_id, id]
+      [date, hora, medico_id, paciente_id, plano_id, id]
     );
 
     res.json(result.rows[0]);
@@ -108,22 +108,21 @@ exports.remove = async (req, res) => {
   }
 };
 
-// ✅ NOVO: Importação em massa
 exports.bulkInsert = async (req, res) => {
   const consultas = req.body;
 
   try {
     const insertPromises = consultas.map((c, index) => {
-      const { date, medico_id, paciente_id, plano_id } = c;
+      const { date, hora, medico_id, paciente_id, plano_id } = c;
 
-      if (!date || !medico_id || !paciente_id || !plano_id) {
+      if (!date || !hora || !medico_id || !paciente_id || !plano_id) {
         throw new Error(`Linha ${index + 1}: campos obrigatórios ausentes.`);
       }
 
       return db.query(
-        `INSERT INTO consults (data, medico_id, paciente_id, plano_id)
-         VALUES ($1, $2, $3, $4)`,
-        [date, medico_id, paciente_id, plano_id]
+        `INSERT INTO consults (data, hora, medico_id, paciente_id, plano_id)
+         VALUES ($1, $2, $3, $4, $5)`,
+        [date, hora, medico_id, paciente_id, plano_id]
       );
     });
 

@@ -58,7 +58,7 @@ const BulkUpload = ({ endpoint, onSuccess }) => {
       console.log('✅ Resposta do servidor:', response.data);
 
       if (onSuccess && typeof onSuccess === 'function') {
-        onSuccess(); // chama função para atualizar dados na tela
+        onSuccess();
       }
     } catch (error) {
       console.error('❌ Erro na importação:', error);

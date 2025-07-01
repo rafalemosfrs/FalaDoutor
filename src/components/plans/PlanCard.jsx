@@ -15,7 +15,7 @@ const PlanCard = () => {
       label: 'Cadastro',
       content: (
         <div className="space-y-6">
-          <BulkUpload endpoint="plans" />
+          <BulkUpload endpoint="/api/plans/bulk" />
           <PlanForm />
         </div>
       )

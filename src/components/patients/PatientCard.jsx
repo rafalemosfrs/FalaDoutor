@@ -9,11 +9,11 @@ import { useData } from '../../context/DataContext';
 
 const PatientCard = () => {
   const { fetchPatients } = useData();
-  const [refreshKey, setRefreshKey] = useState(0); // ✅ força recarregamento
+  const [refreshKey, setRefreshKey] = useState(0);
 
   const handleSuccess = async () => {
     await fetchPatients();
-    setRefreshKey(prev => prev + 1); // ✅ força o React a re-renderizar os componentes filhos
+    setRefreshKey(prev => prev + 1);
   };
 
   const tabs = [

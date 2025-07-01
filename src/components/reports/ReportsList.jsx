@@ -118,7 +118,14 @@ const ReportsList = () => {
       </div>
 
       <div className="bg-white p-4 rounded-lg border shadow">
-        <h3 className="text-lg font-semibold mb-4">📋 Resultados</h3>
+        <h3 className="text-lg font-semibold mb-4 text-black">
+          📋 Resultados 
+          {consults.length > 0 && (
+            <span className="text-sm font-normal text-gray-600 ml-2">
+              ({consults.length} consulta{consults.length > 1 ? 's' : ''})
+            </span>
+          )}
+        </h3>
         {consults.length === 0 ? (
           <p className="text-sm text-gray-500">Nenhuma consulta encontrada.</p>
         ) : (

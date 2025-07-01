@@ -9,11 +9,11 @@ import { useData } from '../../context/DataContext';
 
 const DoctorCard = () => {
   const { fetchDoctors } = useData();
-  const [refreshKey, setRefreshKey] = useState(0); // ✅ controla atualização do conteúdo
+  const [refreshKey, setRefreshKey] = useState(0);
 
   const handleSuccess = async () => {
     await fetchDoctors();
-    setRefreshKey(prev => prev + 1); // ✅ força re-render de DoctorList
+    setRefreshKey(prev => prev + 1);
   };
 
   const tabs = [

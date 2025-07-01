@@ -3,6 +3,7 @@ import { useData } from '../../context/DataContext';
 
 const initialState = {
   date: '',
+  hora: '',
   plan_id: '',
   doctor_id: '',
   patient_id: ''
@@ -25,9 +26,9 @@ const ConsultForm = ({ onSaved = null }) => {
     const plan_id = parseInt(formData.plan_id);
     const doctor_id = parseInt(formData.doctor_id);
     const patient_id = parseInt(formData.patient_id);
-    const { date } = formData;
+    const { date, hora } = formData;
 
-    if (!date || isNaN(plan_id) || isNaN(doctor_id) || isNaN(patient_id)) {
+    if (!date || !hora || isNaN(plan_id) || isNaN(doctor_id) || isNaN(patient_id)) {
       setError('Todos os campos são obrigatórios.');
       return;
     }
@@ -38,6 +39,7 @@ const ConsultForm = ({ onSaved = null }) => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               date,
+              hora,
               medico_id: doctor_id,
               paciente_id: patient_id,
               plano_id: plan_id
@@ -69,6 +71,17 @@ const ConsultForm = ({ onSaved = null }) => {
           type="date"
           name="date"
           value={formData.date}
+          onChange={handleChange}
+          className="input-field bg-white text-black"
+        />
+      </div>
+
+      <div>
+        <label className="form-label">Hora</label>
+        <input
+          type="time"
+          name="hora"
+          value={formData.hora}
           onChange={handleChange}
           className="input-field bg-white text-black"
         />

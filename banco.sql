@@ -33,6 +33,7 @@ create table consults (
   data DATE NOT NULL,
   medico_id INTEGER REFERENCES doctors(id) ON DELETE CASCADE,
   paciente_id INTEGER REFERENCES patients(id) ON DELETE CASCADE,
-  plano_id INTEGER REFERENCES plans(id) ON DELETE CASCADE
+  plano_id INTEGER REFERENCES plans(id) ON DELETE CASCADE,
+  hora TIME NOT NULL DEFAULT '00:00',
 );
 
